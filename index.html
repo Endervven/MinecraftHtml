@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Minecraft</title>
 		<link rel="shortcut icon" type="image/ico" href="https://www.minecraft.net/etc.clientlibs/minecraft/clientlibs/main/resources/favicon.ico">
 	</head>
@@ -91,6 +92,11 @@
 			color: white;
       font-family: 'Poppins', sans-serif;
 		}
+        @media (min-width: 768px) {
+            #joyDiv {
+                display: none;
+            }
+        }
 	</style>
 	<body>
 	<canvas id="overlay" tabindex="0" width="600" height="600" style="position: absolute; top: 0px; left: 0px"></canvas>
@@ -182,6 +188,8 @@
 			if (gl_FragColor.a == 0.0) discard;
 		}
 	</script>
+	<div id="joyDiv" style="width:200px;height:200px;margin-bottom:20px;position:absolute;bottom:0;left:0;"></div>
+	<script src="Joystick.js"></script>
 	<script type="application/javascript">
 window.canvas = document.getElementById("overlay")
 window.ctx = canvas.getContext("2d")
@@ -195,6 +203,32 @@ var hoverbox = document.getElementById("onhover")
 ctx.canvas.width  = window.innerWidth
 ctx.canvas.height = window.innerHeight
 
+var joy = new JoyStick('joyDiv', {}, function(stickData) {
+    let x = stickData.x;
+    let y = stickData.y;
+
+    if (y > 50) {
+        Key.w = true;
+        Key.s = false;
+    } else if (y < -50) {
+        Key.s = true;
+        Key.w = false;
+    } else {
+        Key.w = false;
+        Key.s = false;
+    }
+
+    if (x > 50) {
+        Key.d = true;
+        Key.a = false;
+    } else if (x < -50) {
+        Key.a = true;
+        Key.d = false;
+    } else {
+        Key.a = false;
+        Key.d = false;
+    }
+});
 
 var MathGlob = Math
 function MineKhan() {
